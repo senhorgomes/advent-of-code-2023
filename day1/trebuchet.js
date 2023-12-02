@@ -33,6 +33,12 @@ fs.readFile('./puzzleInput.txt', 'utf8', (e,d)=>{
         let firstNumber = 0;
         let lastNumber = 0;
        for(let i = 0; i < singleLineOfText.length; i ++){
+        if(!isNaN(singleLineOfText[i])){
+            if(firstNumber === 0){
+                firstNumber = singleLineOfText[i]
+            }
+            lastNumber = singleLineOfText[i]
+        }
         let threeLetterNumber = singleLineOfText[i]+singleLineOfText[i + 1]+singleLineOfText[i + 2]
         let fourLetterNumber = singleLineOfText[i]+singleLineOfText[i + 1]+singleLineOfText[i + 2]+singleLineOfText[i + 3]
         let fiveLetterNumber = singleLineOfText[i]+singleLineOfText[i + 1]+singleLineOfText[i + 2]+singleLineOfText[i + 3]+singleLineOfText[i + 4]
