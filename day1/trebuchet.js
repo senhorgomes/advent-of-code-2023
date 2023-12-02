@@ -1,24 +1,24 @@
 const fs = require('fs')
 // Part one
-fs.readFile('./puzzleInput.txt', 'utf8', (e,d)=>{
-    const arrayOfEntries = d.split('\n')
-    let totalValue = 0;
-    for(const singleLineOfText of arrayOfEntries){
-        let firstNumber = 0;
-        let lastNumber = 0;
-        for(const letter of singleLineOfText){
-            if(!isNaN(letter)){
-                if(firstNumber === 0){
-                    firstNumber = letter
-                }
-                lastNumber = letter
-            }
-        }
-        let calibrationValue = firstNumber + lastNumber
-        totalValue += Number(calibrationValue)
-    }
-    console.log(totalValue);
-})
+// fs.readFile('./puzzleInput.txt', 'utf8', (e,d)=>{
+//     const arrayOfEntries = d.split('\n')
+//     let totalValue = 0;
+//     for(const singleLineOfText of arrayOfEntries){
+//         let firstNumber = 0;
+//         let lastNumber = 0;
+//         for(const letter of singleLineOfText){
+//             if(!isNaN(letter)){
+//                 if(firstNumber === 0){
+//                     firstNumber = letter
+//                 }
+//                 lastNumber = letter
+//             }
+//         }
+//         let calibrationValue = firstNumber + lastNumber
+//         totalValue += Number(calibrationValue)
+//     }
+//     console.log(totalValue);
+// })
 
 // Part two
 fs.readFile('./puzzleInput.txt', 'utf8', (e,d)=>{
@@ -66,35 +66,36 @@ fs.readFile('./puzzleInput.txt', 'utf8', (e,d)=>{
             }
         }
         if(threeLetterNumber=== "one"){
-            firstNumber = 1;
+            lastNumber = 1;
         }
         if(threeLetterNumber=== "two"){
-            firstNumber = 2;
+            lastNumber = 2;
         }
         if(threeLetterNumber=== "six"){
-            firstNumber = 6;
+            lastNumber = 6;
         }
         if(fourLetterNumber=== "four"){
-            firstNumber = 4;
+            lastNumber = 4;
         }
         if(fourLetterNumber=== "five"){
-            firstNumber = 5;
+            lastNumber = 5;
         }
         if(fourLetterNumber=== "nine"){
-            firstNumber = 9;
+            lastNumber = 9;
         }
         if(fiveLetterNumber=== "three"){
-            firstNumber = 3;
+            lastNumber = 3;
         }
         if(fiveLetterNumber=== "seven"){
-            firstNumber = 7;
+            lastNumber = 7;
         }
         if(fiveLetterNumber=== "eight"){
-            firstNumber = 8;
+            lastNumber = 8;
         }
        }
-        let calibrationValue = firstNumber + lastNumber
+        let calibrationValue = `${firstNumber}` + `${lastNumber}`
         totalValue += Number(calibrationValue)
+        console.log(calibrationValue)
     }
     console.log(totalValue);
 })
