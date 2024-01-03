@@ -16,8 +16,11 @@ const checkForMatches = (currentRow, currentColumn, numberLength) => {
     //  +1
     const checkLeftOfNumber = currentRow[currentColumn - 1];
     const checkRightOfNumber = currentRow[currentColumn + numberLength]
-    if (validSymbols[checkLeftOfNumber] || validSymbols[checkRightOfNumber]) {
-        return true
+    if (validSymbols[checkLeftOfNumber]){
+        return `${currentRow}${currentColumn-1}`
+    }
+    if (validSymbols[checkRightOfNumber]) {
+        return `${currentRow}${currentColumn + numberLength}`
     }
     return false
 }
@@ -28,13 +31,13 @@ const checkForMatchesAboveAndBelow = (rowBelow, rowAbove, numberLength, currentC
             const indexAbove = rowAbove[column];
             // insert in gearRatios object
             if (isNaN(Number(indexAbove)) && validSymbols[indexAbove]) {
-                return true
+                return `${rowAbove}${column}`
             }
         }
         if (rowBelow && column >= 0 && column < rowBelow.length) {
             const indexBelow = rowBelow[column];
             if (isNaN(Number(indexBelow)) && validSymbols[indexBelow]) {
-                return true
+                return `${rowBelow}${column}`
             }
         }
     }
@@ -44,14 +47,14 @@ const checkForMatchesAboveAndBelow = (rowBelow, rowAbove, numberLength, currentC
 }
 // .....%821...
 const testString = [
-    '...........................................751........501*55................................890.231...............829..168......143.........',
+    '...........................................751........501.55................................890.231...............829..168......143.........',
     '......................................*.........841....*....../................+..311.......................441..........*...........202....',
     '.........332...60....537..697.......901.................609....678....261.....90................870....519...........272..449.......%.......'
 ]
 const objectForMutualGears = []
-for (let row = 0; row < testString.length; row++) {
+for (let row = 0; row < formattedData.length; row++) {
     // const currentLoopedArray = formattedData[row];
-    const currentLoopedArray = testString[row];
+    const currentLoopedArray = formattedData[row];
     for (let column = 0; column < currentLoopedArray.length; column++) {
         let number = Number(currentLoopedArray[column])
         let actualNumber = ''
@@ -65,8 +68,14 @@ for (let row = 0; row < testString.length; row++) {
                 }
                 column += actualNumber.length - 1;
             }
-            if (checkForMatches(currentLoopedArray, currentColumn, actualNumber.length) || checkForMatchesAboveAndBelow(testString[row - 1], testString[row + 1], actualNumber.length, currentColumn)) {
-                validNumbers.push(Number(actualNumber))
+            let leftOrRightCheck = checkForMatches(currentLoopedArray, currentColumn, actualNumber.length)
+            let checkAboveAndBelow = checkForMatchesAboveAndBelow(formattedData[row - 1], formattedData[row + 1], actualNumber.length, currentColumn)
+            if (leftOrRightCheck ) {
+                validNumbers.push({number: Number(actualNumber), position: leftOrRightCheck})
+                totalNumber += Number(actualNumber)
+            }
+            if (checkAboveAndBelow ) {
+                validNumbers.push({number: Number(actualNumber), position: checkAboveAndBelow})
                 totalNumber += Number(actualNumber)
             }
 
@@ -76,8 +85,28 @@ for (let row = 0; row < testString.length; row++) {
 
 //  %&@$ 
 // Using match instead
-// const numberMatches = testString.match(/[*/#=+\-%&@$]\d+\.*\d*|\d+\.*\d*[*/#=+\-%&@$]/g);
+const numberMatches = testString[0].match(/\d+/g);
 // const numberMatches = testString.match(/(?<=[*\/#=+\-%&@$])\d+\.*\d*|\d+\.*\d*(?=[*\/#=+\-%&@$])/g)
 console.log(validNumbers)
 // console.log(totalNumber)
 
+const adjustedValues = () => {
+    const objectForChecks = {}
+    validNumbers.forEach((object)=> {
+        if(objectForChecks[object.position]){
+            objectForChecks[object.position].push(object.number)
+        } else {
+            objectForChecks[object.position] = [object.number]
+        }
+    })
+    return objectForChecks
+}
+const finalObject = adjustedValues()
+let finalGearNumber = 0
+for(let key in finalObject){
+    if(finalObject[key].length == 2){
+        let combinedGear = finalObject[key][0] * finalObject[key][1]
+        finalGearNumber += combinedGear
+    }
+}
+console.log(finalGearNumber)
